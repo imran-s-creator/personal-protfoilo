@@ -61,14 +61,14 @@ https://github.com/imran-s-creator/mathesar-imranitha
 
 ## 🔗 Connect With Me
 
-**GitHub:**  
+🌐 **Portfolio:**  
+https://personal-protfoilo.vercel.app/
+
+💻 **GitHub:**  
 https://github.com/imran-s-creator
 
-**LinkedIn:**  
+💼 **LinkedIn:**  
 https://www.linkedin.com/in/imran-s-44b8a53ab/
-
-**Portfolio:**  
-https://imran-portfoliocom.vercel.app/
 
 ## 📩 Contact
 
