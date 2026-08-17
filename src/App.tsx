@@ -74,9 +74,9 @@ const certifications: Certification[] = [
 const education = [
   {
     year: '2025 – 2029',
-    title: 'Kalvium',
+    title: 'B.Tech Computer Science Engineering (Applied AI)',
     subtitle: 'St. Joseph University, Chennai',
-    details: '',
+    program: 'Kalvium',
   },
 ];
 
@@ -379,7 +379,9 @@ function App() {
                 >
                   <span className="entry-year">{item.year}</span>
                   <div>
-                    <h3>
+                    <h3>{item.title}</h3>
+                    <p className="entry-subtitle">{item.subtitle}</p>
+                    <p>
                       <a
                         href="https://kalvium.com/"
                         className="kalvium-trigger"
@@ -387,11 +389,9 @@ function App() {
                         rel="noreferrer noopener"
                         aria-label="Visit Kalvium website"
                       >
-                        <span className="kalvium-accent">{item.title}</span>
+                        <span className="kalvium-accent">{item.program}</span>
                       </a>
-                    </h3>
-                    <p className="entry-subtitle">{item.subtitle}</p>
-                    {item.details ? <p>{item.details}</p> : null}
+                    </p>
                   </div>
                 </motion.article>
               ))}
