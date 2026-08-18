@@ -44,6 +44,7 @@ const projects = [
     tech: ['GitHub', 'Open Source', 'Frontend'],
     github: 'https://github.com/imran-s-creator/mathesar-imran',
     live: '',
+    image: 'https://cdn.ebnermediagroup.de/dotnet/img/1/7/7/9/0/1/5/Mathesar.jpg?width=640&format=webply',
   },
 ];
 
@@ -271,7 +272,7 @@ function App() {
                 <TiltCard key={`${project.title}-${index}`} delay={index * 0.04} className="project-card glass-card">
                   <div className="project-preview">
                     <img
-                      src="https://s3.typoniels.de/typoniels-strapi/production/mathesar_4694921f23.webp"
+                      src={project.image}
                       alt={project.title}
                       className="project-preview__image"
                     />
