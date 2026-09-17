@@ -2,16 +2,24 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowUpRight,
+  Braces,
+  Code2,
   Github,
+  Image,
   Instagram,
+  LayoutTemplate,
   Linkedin,
   Mail,
   Menu,
+  MessageCircle,
+  Palette,
+  PenTool,
   Send,
+  Video,
   X,
 } from 'lucide-react';
 
-type SectionId = 'home' | 'about' | 'skills' | 'projects' | 'certifications' | 'education' | 'contact';
+type SectionId = 'home' | 'about' | 'learning' | 'skills' | 'projects' | 'certifications' | 'education' | 'contact';
 type Certification = { title: string; issuer: string; date: string; kind: 'participation' | 'completion'; image: string };
 
 const sections: Array<{ id: SectionId; label: string }> = [
@@ -25,16 +33,15 @@ const sections: Array<{ id: SectionId; label: string }> = [
 ];
 
 const skills = [
-  'Frontend Development',
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'UI/UX Design',
-  'Graphic Design',
-  'Video Editing',
-  'Photo Editing',
-  'Communication',
-  'Public Speaking',
+  { name: 'HTML', description: 'Building clear, semantic page structures.', icon: Code2 },
+  { name: 'CSS', description: 'Styling responsive layouts with care.', icon: Palette },
+  { name: 'JavaScript', description: 'Adding useful interaction to interfaces.', icon: Braces },
+  { name: 'Frontend Development', description: 'Turning ideas into working websites.', icon: LayoutTemplate },
+  { name: 'UI/UX Design', description: 'Planning flows that feel easy to use.', icon: PenTool },
+  { name: 'Graphic Design', description: 'Creating visuals for digital projects.', icon: Palette },
+  { name: 'Video Editing', description: 'Cutting together simple, focused stories.', icon: Video },
+  { name: 'Photo Editing', description: 'Improving images for a cleaner finish.', icon: Image },
+  { name: 'Communication / Public Speaking', description: 'Explaining ideas clearly to people.', icon: MessageCircle },
 ];
 
 const projects = [
@@ -93,6 +100,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeCertification, setActiveCertification] = useState<Certification | null>(null);
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const navRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -205,7 +213,7 @@ function App() {
                 Hi, I&apos;m <span>Imran</span>
               </motion.h1>
               <motion.p className="lead" variants={introVariants} transition={{ duration: 0.6 }}>
-                Creative Developer & Designer building clean digital experiences through frontend work, UI/UX, and visual design.
+                I&apos;m a computer science student learning frontend development and visual design by making projects that are useful, clear, and enjoyable to use.
               </motion.p>
 
               <motion.div className="hero-meta" variants={introVariants} transition={{ duration: 0.6 }}>
@@ -224,6 +232,18 @@ function App() {
               initial={{ opacity: 0, y: 30, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              onPointerMove={(event) => {
+                if (event.pointerType === 'touch') return;
+                const rect = event.currentTarget.getBoundingClientRect();
+                const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+                const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+                event.currentTarget.style.setProperty('--hero-tilt-x', `${-y * 2.5}deg`);
+                event.currentTarget.style.setProperty('--hero-tilt-y', `${x * 2.5}deg`);
+              }}
+              onPointerLeave={(event) => {
+                event.currentTarget.style.setProperty('--hero-tilt-x', '0deg');
+                event.currentTarget.style.setProperty('--hero-tilt-y', '0deg');
+              }}
             >
               <div className="profile-card">
                 <div className="profile-photo" aria-hidden="true">
@@ -238,35 +258,46 @@ function App() {
 
         <section className="section" id="about" data-section>
           <div className="container split-layout">
-            <SectionHeading
-              eyebrow="About Me"
-              title="A simple introduction that sounds like a real person, not a template."
-              description="I like making interfaces feel calm, intentional, and easy to use. Most of my work sits somewhere between front-end development and visual design, with a focus on details that make a site feel finished."
-            />
+            <SectionHeading eyebrow="About Me" title="A little about who I am and what I enjoy making." description="I am currently studying Computer Science Engineering with Applied AI at St. Joseph University. I enjoy combining code and design, especially when a small detail makes a website easier to understand or nicer to use." />
             <div className="about-grid">
-              <InfoCard title="Education" value="St. Joseph University, Chennai" detail="2025 – 2029" />
-              <InfoCard title="Current status" value="Student / Creative Maker" detail="Working on projects, learning, and building a portfolio." />
-              <InfoCard title="Interests" value="Design systems, motion, branding" detail="Also interested in editing, photography, and storytelling." />
-              <InfoCard title="Career goal" value="Front-end design roles" detail="Wanting to build polished digital experiences with real users in mind." />
-              <InfoCard title="Strengths" value="Clear communication" detail="Organized, adaptable, and comfortable working across design and code." />
+              <InfoCard title="Who I am" value="Student and creative maker" detail="I like learning by building small things and improving them over time." />
+              <InfoCard title="What I enjoy" value="Code, design, and editing" detail="I work across websites, graphics, photos, and short videos." />
+              <InfoCard title="My interests" value="UI/UX, branding, and open source" detail="I enjoy seeing how design choices affect the way people use a product." />
+              <InfoCard title="What I am improving" value="JavaScript and frontend depth" detail="I am getting better at structure, accessibility, and making ideas work on every screen." />
+            </div>
+          </div>
+        </section>
+
+        <section className="section learning-section" id="learning" data-section>
+          <div className="container learning-grid">
+            <div className="learning-panel">
+              <span className="eyebrow">Currently Learning</span>
+              <div className="learning-list">
+                {['Frontend Development', 'JavaScript', 'UI/UX', 'Applied AI', 'Git & GitHub'].map((item) => <span key={item}>{item}</span>)}
+              </div>
+            </div>
+            <div className="learning-panel learning-panel--note">
+              <span className="eyebrow">Currently Working On</span>
+              <p>Currently building and improving my personal projects while learning new technologies.</p>
             </div>
           </div>
         </section>
 
         <section className="section" id="skills" data-section>
           <div className="container">
-            <SectionHeading eyebrow="Skills" title="A focused set of skills shown without fake percentages or hype." description="These cards are meant to feel clean and modern, with just enough motion to make the section feel alive when you hover or scroll past it." />
+            <SectionHeading eyebrow="Skills" title="Things I use to make and communicate ideas." description="A practical mix of development, design, editing, and communication skills I am building through coursework and personal projects." />
             <div className="skills-grid">
-              {skills.map((skill, index) => (
-                <TiltCard key={skill} delay={index * 0.03} className="skill-card glass-card"><span>{skill}</span></TiltCard>
-              ))}
+              {skills.map((skill, index) => {
+                const Icon = skill.icon;
+                return <TiltCard key={skill.name} delay={index * 0.03} className="skill-card glass-card"><Icon size={20} strokeWidth={1.8} /><strong>{skill.name}</strong><p>{skill.description}</p></TiltCard>;
+              })}
             </div>
           </div>
         </section>
 
         <section className="section" id="projects" data-section>
           <div className="container">
-            <SectionHeading eyebrow="Projects" title="Project case studies with room for the real work you want to show." description="Each card is structured like a portfolio case study so it can hold your actual screenshots, descriptions, and links without needing a redesign." />
+            <SectionHeading eyebrow="Projects" title="A few things I have been building and contributing to." description="These are practical projects and contributions that show what I am learning in code, design, and collaboration." />
             <div className="projects-grid">
               {projects.map((project, index) => (
                 <TiltCard key={`${project.title}-${index}`} delay={index * 0.04} className="project-card glass-card">
@@ -320,7 +351,9 @@ function App() {
                     <span className="timeline-date">{certificate.date}</span>
                     <h3>{certificate.title}</h3>
                     <p>{certificate.issuer}</p>
-
+                    <button type="button" className="text-button certificate-button" onClick={() => setActiveCertification(certificate)}>
+                      View Certification <ArrowUpRight size={16} />
+                    </button>
                   </div>
                 </motion.article>
               ))}
@@ -367,7 +400,7 @@ function App() {
 
         <section className="section" id="education" data-section>
           <div className="container split-layout">
-            <SectionHeading eyebrow="Education" title="A minimal vertical timeline for study, experience, and milestones." description="Keep this honest and specific. Small details about what you learned or built tend to read better than oversized claims." />
+            <SectionHeading eyebrow="Education" title="Where I am learning and building my foundation." description="I am studying computer science while building practical experience through personal projects and open-source contribution." />
             <div className="education-timeline">
               {education.map((item, index) => (
                 <motion.article
@@ -402,7 +435,7 @@ function App() {
 
         <section className="section" id="social" aria-label="Social connections">
           <div className="container">
-            <SectionHeading eyebrow="Let's Connect" title="Simple links that make it easy to reach you." description="These placeholders can be replaced with your real profiles when you are ready to publish." />
+            <SectionHeading eyebrow="Social Connections" title="Find me in the places where I share and learn." description="You can follow my work, see what I am building, or send me a message directly." />
             <div className="social-grid">
               {socialLinks.map((link, index) => {
                 const Icon = link.icon;
@@ -431,14 +464,31 @@ function App() {
 
         <section className="section contact-section" id="contact" data-section>
           <div className="container contact-grid">
-            <SectionHeading eyebrow="Contact" title="A minimal contact form for messages, inquiries, or opportunities." description="The form is intentionally simple so it feels personal rather than like a generic lead-capture block." />
+            <SectionHeading eyebrow="Contact" title="Have something to ask or build together?" description="Send a message and I will get back to you when I can." />
             <motion.form
               className="contact-form glass-card"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={async (event) => {
+                event.preventDefault();
+                setContactStatus('sending');
+                const form = event.currentTarget;
+                const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT;
+                try {
+                  if (endpoint) {
+                    const response = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+                    if (!response.ok) throw new Error('Message could not be sent');
+                  } else {
+                    await new Promise((resolve) => window.setTimeout(resolve, 700));
+                  }
+                  setContactStatus('success');
+                  form.reset();
+                } catch {
+                  setContactStatus('error');
+                }
+              }}
             >
               <label>
                 <span>Name</span>
@@ -452,9 +502,11 @@ function App() {
                 <span>Message</span>
                 <textarea name="message" rows={5} placeholder="Tell me about your project or inquiry..." />
               </label>
-              <button type="submit" className="button button-primary submit-button">
-                Send Message <Send size={16} />
+              <button type="submit" className="button button-primary submit-button" disabled={contactStatus === 'sending'}>
+                {contactStatus === 'sending' ? 'Sending...' : 'Send Message'} <Send size={16} />
               </button>
+              {contactStatus === 'success' ? <p className="form-feedback form-feedback--success" role="status">Message sent successfully!</p> : null}
+              {contactStatus === 'error' ? <p className="form-feedback form-feedback--error" role="alert">Something went wrong. Please try again or email me directly.</p> : null}
             </motion.form>
           </div>
         </section>
